@@ -1,2 +1,4 @@
 # 033designproject
-6.033 Design Project by Joel Gustafson, Obasi Onuoha, and Kenny Friedman
+Joel Gustafson, Obasi Onuoha, and Kenny Friedman present:
+
+Lit Banjo; Keen Hoes: a 6.033 Design Project
