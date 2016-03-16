@@ -1,4 +1,4 @@
 *.log
-*.aux
-*.pdf
+outline.aux
+outline.pdf
 *.synctex.gz
