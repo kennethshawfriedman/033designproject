@@ -42,10 +42,14 @@
 		No. No it doesn't.
 		
 		\section{Communications Protocols}
-		Section coming in hot.
+		This section outlines the communications protocols used from the controller of a client to the AP, from the AP to the controller of a client , from the AP to the server, and from the server to the AP.
 		
-		\section{Conclusion}
-		I'm about to conclude so hard up in this bitch.
+		\subsection{Client to AP}
+		When a client connects to an AP, its controller immediately send a frame to the AP. The frame is of the following form:
+		\begin{center}\textit{ src addr \textbar dst addr \textbar meta \textbar data  }\end{center}
+		Where \textit{src addr} is the 48-bit MAC address of the client, \textit{dst addr} is the 48-bit MAC address of the AP to which the controller is communicating, and \textit{meta} is the 8-bit value 00000001. \textit{Data} is an variable-bit value defined as follows:
+		\begin{center}\textit{R \textbar addrs}\end{center}
+		Where \textit{R} is a 32-bit integer representing the maximum number of bits that the client will need to transmit over the course of any one second and \textit{addrs} is the value formed of the concatenation of the 48-bit MAC addresses of all of the APs within range of the client. The MAC addresses which compose \textit{addrs} are sorted in decreasing order of signal strength.
 		
 		\appendices
 		\section{Proof of the First Zonklar Equation}
