@@ -42,14 +42,47 @@
 		No. No it doesn't.
 		
 		\section{Communications Protocols}
-		This section outlines the communications protocols used from the controller of a client to the AP, from the AP to the controller of a client , from the AP to the server, and from the server to the AP.
+		This section outlines the communications protocols used from the controller of a client to the AP, from the AP to the controller of a client, from the AP to the server, and from the server to the AP.
 		
 		\subsection{Client to AP}
 		When a client connects to an AP, its controller immediately send a frame to the AP. The frame is of the following form:
 		\begin{center}\textit{ src addr \textbar dst addr \textbar meta \textbar data  }\end{center}
-		Where \textit{src addr} is the 48-bit MAC address of the client, \textit{dst addr} is the 48-bit MAC address of the AP to which the controller is communicating, and \textit{meta} is the 8-bit value 00000001. \textit{Data} is an variable-bit value defined as follows:
+		Where \textit{src addr} is the 48-bit MAC address of the client, \textit{dst addr} is the 48-bit MAC address of the AP to which the controller is communicating, and \textit{meta} is the 8-bit value 00000001. \textit{Data} is a variable-bit value defined as follows:
 		\begin{center}\textit{R \textbar addrs}\end{center}
-		Where \textit{R} is a 32-bit integer representing the maximum number of bits that the client will need to transmit over the course of any one second and \textit{addrs} is the value formed of the concatenation of the 48-bit MAC addresses of all of the APs within range of the client. The MAC addresses which compose \textit{addrs} are sorted in decreasing order of signal strength.
+		Where \textit{R} is a 32-bit integer representing the maximum number of bits that the client will need to transmit over the course of any one second and \textit{addrs} is the value formed of the concatenation of the 48-bit MAC addresses of all of the APs within range of the client. The MAC addresses which compose \textit{addrs} are sorted in decreasing order of signal strength.\\
+		\\
+		Every 30 seconds, the client sends a message to its AP. This message is of the following form:
+		\begin{center}\textit{ src addr \textbar dst addr \textbar meta \textbar data  }\end{center}
+		Where \textit{src addr} is the 48-bit MAC address of the client, \textit{dst addr} is the 48-bit MAC address of the AP to which the controller is communicating, and \textit{meta} is the 8-bit value 00000100. \textit{Data} is a variable-bit value defined as follows:
+		\begin{center}\textit{G \textbar A}\end{center}
+		Where \textit{G} is a 32-bit integer representing the number of bits that the client generated over the past 30 seconds and \textit{A} is a 32-bit integer representing the number of bits that the client successfully sent over the past 30 seconds.
+		
+		\subsection{AP to Client}
+		When an AP needs to tell a client to connect to a different AP within range of the client, it sends a frame of the following form:
+		\begin{center}\textit{ src addr \textbar dst addr \textbar meta \textbar data  }\end{center}
+		Where \textit{src addr} is the 48-bit MAC address of the AP sending the frame, \textit{dst addr} is the 48-bit MAC address of the client to which the AP wished to communicate, and \textit{meta} is the 8-bit value 00000010. \textit{Data} is 48-bit value specifying the AP to which the client should connect.\\
+		\\
+		When an AP needs to tell the user of a client to move physically in order to connect to a different AP which is not in the immediate range of the client, it sends a frame of the following form:
+		\begin{center}\textit{ src addr \textbar dst addr \textbar meta \textbar data  }\end{center}
+		Where \textit{src addr} is the 48-bit MAC address of the AP sending the frame, \textit{dst addr} is the 48-bit MAC address of the client to which the AP wished to communicate, and \textit{meta} is the 8-bit value 00000011. \textit{Data} is a 24-bit value defined as follows:
+		\begin{center}\textit{bld \textbar rm}\end{center}
+		Where \textit{bld} is a 12-bit binary integer specifying the building number of the desired AP and \textit{rm} is a 12-bit integer specifying the room number of the desired AP.
+		
+		\subsection{AP to Server}
+		When a new client connects to an AP, it sends a message to the IS\&T server. This message is of the following form:
+		\begin{center}\textit{maddr \textbar caddr \textbar R}\end{center}
+		Where \textit{maddr} is the 48-bit MAC address of the AP, \textit{cddr} is the 48-bit MAC address of the client which just connected, and \textit{R} is a 32-bit integer specifying the maximum number of bits that the client will need to transmit over the course of any one second.\\
+		\\
+		Every 30 seconds, independent of any connected clients, the AP sends a message to the IS\&T server. This message is of the following form:
+		\begin{center}\textit{maddr \textbar cnum \textbar rsum \textbar asum \textbar gsum}\end{center}
+		Where \textit{maddr} is the 48-bit MAC address of the AP sending the message, \textit{cnum} is a 7-bit integer specifying number of clients connected to the AP sending the message, \textit{rsum} is a 39-bit integer specifying the maximum number of bits that the clients connected to the AP sending the message may need to send over any given second, \textit{asum} is a 20-bit integer specifying how many bits clients have transmitted to the AP sending the message over the last 30 seconds, and \textit{gsum} is a 39-bit integer specifying the number of bits that the clients connected to the AP sending the message have generated over the past 30 seconds. 
+		
+		\subsection{Server to AP}
+		When the IS\&T server determines that an a client needs to connect to a different AP, it sends a message to the AP that client is currently connected to. This message takes the following form:
+		\begin{center}\textit{caddr \textbar naddr \textbar rlct }\end{center}
+		Where \textit{caddr} is the 48-bit MAC address of the client which is being directed to switch to a new AP and \textit{naddr} is the 48-bit MAC address of the AP to which the client is being directed to switch. \textit{rlct} is a 24-bit value composed of all 0's if the AP in question is in range of the client in question or a 24-bit value defined as follows if it is not:
+		\begin{center}\textit{bld \textbar rm}\end{center}
+		Where \textit{bld} is a 12-bit binary integer specifying the building number of the desired AP and \textit{rm} is a 12-bit integer specifying the room number of the desired AP.
 		
 		\appendices
 		\section{Proof of the First Zonklar Equation}
