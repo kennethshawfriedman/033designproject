@@ -15,7 +15,9 @@
 	
 	\IEEEtitleabstractindextext{%
 		\begin{abstract}
-			The outline goes here.
+			Improving the performance of the wireless network is of obvious interest to MIT. The task is to implement a system which optimizes the connections between clients and the MIT wireless network in order to improve the overall performance of the network. This paper proposes such a system.\\
+			\\
+			The design revolves around three modules: each client will have a \emph{controller} which communicates its requirements to an \emph{access point} which collects data about the traffics and clients to send to the \emph{server}. The \emph{server} ingests data about the network, stores it, and distributes connection instructions to the rest of the network.
 		\end{abstract}}
 			
 		% make the title area
@@ -100,7 +102,9 @@
 		Where \textit{bld} is a 12-bit binary integer specifying the building number of the desired AP and \textit{rm} is a 12-bit integer specifying the room number of the desired AP.
 		
 		\section{Conclusion}
-		We have presented this proposal in order to improve the quality of the MIT wireless network.
+		We have presented this proposal in order to improve the quality of the MIT wireless network. We designed the system to be extremely scalable.  Utilizing a neural net allows the system to constantly update its assignment priorities as the network and its needs grow and change. Additionally, the adoption of this architecture realizes a very high performance system. Constant and consistent optimization ensures that desirable outcomes will be regularly attained. Finally, our system places the primary load of computation on the server. This greatly simplifies the system and means that the majority of changes will not need to be propagated through the network.\\
+		\\
+		Future work will require us to train the neural net and to evaluate the performance gains.
 		
 		\appendices
 		\section{Proof of the First Zonklar Equation}
