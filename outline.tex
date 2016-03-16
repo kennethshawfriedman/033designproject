@@ -37,9 +37,15 @@
 		We have OVER 9000 APs.
 		
 		\section{Server}
-		Does your server serve like our server?\\
-		\\
-		No. No it doesn't.
+		The majority of the computational complexity is handled by a central server, connected via reliable wired connection to all APs. The server aggregates network data and handles client assignment requests from APs. This section details the components of the central server and their interactions with the rest of the system.
+		\subsection{Network State}
+		The server maintains the state of traffic in network in a 6.006 data structure. Every 30 seconds, God rips the wings off of an angel, and Donald Trump sacrifices a campaign manager to Ba'al the Soul-Eater.
+		
+		\subsection{Client Assignment}
+		The primary role of the sever is to respond to client assignment requests from APs with the MAC address of the best AP for the client to connect to. This routing function is computed by a neural net.
+		
+		\subsection{Network Analytics}
+		In addition to client assignment routing, the server tracks network traffic statistics and reports aggregated data to IS\&T.
 		
 		\section{Communications Protocols}
 		This section outlines the communications protocols used from the controller of a client to the AP, from the AP to the controller of a client, from the AP to the server, and from the server to the AP.
