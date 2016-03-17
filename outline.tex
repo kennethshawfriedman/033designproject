@@ -47,16 +47,16 @@
 		Say no to drugs, kids.
 		
 		\section{Server}
-		The majority of the computational complexity is handled by a central server, connected via reliable wired connection to all APs. The server aggregates network data and handles client reassignment. This section details the components of the central server and their interactions with the rest of the system.
+		The majority of the computational complexity is handled by a central server, connected via reliable wired connection to all APs, which aggregates network data and handles client reassignment. The server is explicitly designed to be both unnecessary and modular: the network will still function, albeit naively, upon server failure, and the specific algorithms used to determine client reassignment are independent of the rest of the system. In this context, the server can be viewed as an aggressive optimization layer on top of the main network infrastructure. This section details the components of the central server and their interactions with the rest of the system.
 		
 		\subsection{Network State Object}
-		The server maintains the state of traffic in network in a hash table indexed by AP MAC addresses. The values of the hash table are pointers to objects that are also the nodes of an undirected network graph, which share links when their corresponding APs are within approximately 500 feet of each other in the real world. These links must be updated manually when APs are added, removed, or relocated. The nodes store static properties about the AP (such as its precise location), updated numbers on its network load (generated and successful transmission bits) from the network status updates that the APs send the sever, and a list of pointers to nodes of APs within a 500-foot radius.
+		The server maintains the state of traffic in network in a hash table indexed by AP MAC addresses. The values of the hash table are pointers to objects that are also the nodes of an undirected network graph, which share links when their corresponding APs are within approximately 500 feet of each other in the real world. These links must be updated manually when APs are added, removed, or relocated. The nodes store static properties about the AP (such as its precise location), updated numbers on its network load (such as number of connected clients and generated/successful transmission bits) from the network status updates that the APs send the sever, and a list of pointers to nodes of APs within a 500-foot radius.
 		
 		\subsection{Client Assignment}
 		The primary role of the sever is to respond to client assignment requests from APs with the MAC address of the best AP for the client to connect to. This routing function is computed by a neural net.
 		
 		\subsection{Network Analytics}
-		In addition to client assignment routing, the server tracks network traffic statistics and reports aggregated data to IS\&T.
+		In addition to client assignment routing, the server logs a snapshot of network traffic on each AP every second for IS\&T records. Although each AP only updates the server every 30 seconds to keep traffic on the server minimized, a second-by-second snapshot of every AP captures the state, momentum, and load of the whole network with reasonable resolution.
 		
 		\section{Communications Protocols}
 		This section outlines the communications protocols used from the controller of a client to the AP, from the AP to the controller of a client, from the AP to the server, and from the server to the AP.
