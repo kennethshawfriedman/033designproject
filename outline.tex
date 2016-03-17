@@ -53,16 +53,19 @@
 		The server maintains the state of traffic in network in a hash table indexed by AP MAC addresses. The values of the hash table are pointers to objects that are also the nodes of an undirected network graph, which share links when their corresponding APs are within approximately 500 feet of each other in the real world. These links must be updated manually when APs are added, removed, or relocated. The nodes store static properties about the AP (such as its precise location), updated numbers on its network load (such as number of connected clients and generated/successful transmission bits) from the network status updates that the APs send the sever, and a list of pointers to nodes of APs within a 500-foot radius.
 		
 		\subsection{Client Assignment}
-		The primary role of the sever is to respond to client assignment requests from APs with the MAC address of the best AP for the client to connect to. This routing function is computed by a neural net.
+		The primary role of the sever is dispatch client reassignment directives to balance load across APs. This routing function is computed by a neural net.
+		
+		\subsubsection{Neural Net}
+		BUZZWORDS%
 		
 		\subsection{Network Analytics}
-		In addition to client assignment routing, the server logs a snapshot of network traffic on each AP every second for IS\&T records. Although each AP only updates the server every 30 seconds to keep traffic on the server minimized, a second-by-second snapshot of every AP captures the state, momentum, and load of the whole network with reasonable resolution.
+		In addition to client assignment routing, the server logs a snapshot of network traffic on each AP every second for IS\&T records. Although each individual AP only updates the server every 30 seconds to keep traffic on the server minimized, a second-by-second snapshot of every AP captures the state and load of the whole network with reasonable resolution.
 		
 		\section{Communications Protocols}
 		This section outlines the communications protocols used from the controller of a client to the AP, from the AP to the controller of a client, from the AP to the server, and from the server to the AP.
 		
 		\subsection{Client to AP}
-		When a client connects to an AP, its controller immediately send a frame to the AP. The frame is of the following form:
+		When a client connects to an AP, its controller immediately sends a frame to the AP. The frame is of the following form:
 		\begin{center}\textit{ src addr \textbar dst addr \textbar meta \textbar data  }\end{center}
 		Where \textit{src addr} is the 48-bit MAC address of the client, \textit{dst addr} is the 48-bit MAC address of the AP to which the controller is communicating, and \textit{meta} is the 8-bit value 00000001. \textit{Data} is a variable-bit value defined as follows:
 		\begin{center}\textit{R \textbar addrs}\end{center}
