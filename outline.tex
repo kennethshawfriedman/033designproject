@@ -51,9 +51,12 @@
 		
 		\section{Access Points}
 		Networks can have tens of thousands of access points (APs), and may install, move, or remove them frequently. In order to keep all the access points easily maintainable, our system design uses AP primarily as thin clients to forward data and requests to and from the central server and the client, simplifying the design and minimizing AP logic. This section provides a high-level overview of the functions of each AP beyond serving client requests for data from the outside internet, while section 5 describes the technical specifications for communication between network devices.
+		
 		\subsection{Client Connection}
 		When a client connects to an AP, the AP forwards the client's initial connection message to the server, as detailed in sections 5.1 and 5.3. At this point, both the AP and the client assume that the client will remain connected to the AP unless explicitly reassigned by the server - a response is not needed or expected. This both reduces the number of messages and preserves a moderately functional network in event of a server failure.
+		
 		\subsection{Client Reassignment} Upon receiving a client reassignment message, an AP will forward it to the appropriate client, if it exists. The AP assumes no responsibility for ensuring that the client disconnects, and will continue serving its requests in the interim. The format of these messages are detailed in sections 5.2 and 5.4.
+		
 		\subsection{Network Statistics}
 		Clients send their updated network demands and performance statistics to their AP at 30-second intervals. The AP aggregates these numbers and relays them to the server every 30 seconds. However, since clients operate independently of each other, each AP maintains a hash table mapping its clients' MAC addresses to their 64-bit \textit{data} integers from the update messages detailed in section 5.1. When an AP receives an update message from a client, it writes the value in the hash table at the client's MAC address key to be the 3-tuple \((G, A, T_S\)), where \(G\) is 32-bit integer from the first half of \textit{data}, \(A\) is the 32-bit integer from the second half of \textit{data}, and the timestamp \(T_S\) is the current time in seconds (only the seconds - 4 bits - are necessary, although this is an implementation detail). When the AP needs to send  update message to the server, it first computes \(G_S\) and \(A_S\), which are the sum of \(G\) and \(A\), respectively, for every value in the AP's hash table whose timestamp \(T_S\) is less than 35 seconds old. If a \(T_S\) is older than 35 seconds, the corresponding key is deleted from the table and the client is assumed to be disconnected. The AP then sends \(G_S\) and \(A_S\) to the server, as described in section 5.3.
 		
@@ -71,18 +74,26 @@
 			\item Successful transmission bits
 			\item Number of connected clients
 			\item Links to nodes of overlapping APs
+			\item Load Factor
+			\item Flux Vector
 		\end{itemize}
-		The client count and transmission bit numbers are from the most recent AP update message, and so are never out-of-date by more than 30 seconds. Each nodes also store an association list of references to the nodes of APs whose signal coverage overlaps with its position, which can either be precomputed using geolocation and signal range data, or dynamically updated using client range information received from AP messages.
+		The client count and transmission bit numbers are from the most recent AP update message, and so are never out-of-date by more than 30 seconds. Each nodes also store an association list of references to the nodes of APs whose signal coverage overlaps with its position, which can either be precomputed using geolocation and signal range data, or dynamically updated using client range information received from AP messages. Load Factor and Flux Vector are described in sections 4.2.1 and 4.2.2, respectively.
 		
 		\subsection{Client Assignment}
-		The primary role of the sever is to dispatch client reassignment directives to balance load across APs. Perfect equilibrium will rarely be possible, since clients are restricted to connecting to APs within their range, so the algorithm must make a best attempt at balancing each local graph individually. However, the network is composed of a continuous mesh of APs, not discrete local graphs, so the algorithm must scale across the entire mesh as well. We implement relative local load balancing in two steps: computing a load factor for each AP, and then computing the difference of load factors across each link. We call these differences flux vectors.
+		The primary role of the server is to dispatch client reassignment directives to balance load across APs. Perfect equilibrium will rarely be possible, since clients are restricted to connecting to APs within their range, so the algorithm must make a best attempt at balancing each local graph individually. However, the network is composed of a continuous mesh of APs, not discrete local graphs, so the algorithm must scale across the entire mesh as well. We implement relative local load balancing in three steps: computing a load factor for each AP, and computing the difference of load factors across each link, called ``flux vectors", and sending reassignment messages for flux vectors greater than a normalized capacity threshold. The following sections elaborate on each step of this process.
 		
-		\subsubsection{Load Factor}
+		\subsubsection{Load Factors}
 		This is done by computing a load factor \(L\) for each AP with the following equation:
-		\[L = something\]
+		\[L = G + (G-A)^2\]
+		where \(G\) is the number of generated bits and \(A\) is the number of successfully transmitted bits in the last AP update. This relation was chosen as the load factor to give extra weight to information overflow, when the AP becomes the communication bottleneck for the client. Load factors are updated continuously on each AP status message.
 		
-		\subsubsection{Flux Vector}
-		Wow
+		\subsubsection{Flux Vectors}
+		A flux vector from one AP to another is defined as the difference between their load factors, such that the AP with the larger load factor will have a positive flux vector, and the AP with the lower load factor will have a negative flux vector.
+		\[V_{AB} = L_A - L_B\]
+		Every 15 seconds, the server iterates over every node, and sums the flux vectors for every link in the node's list of overlapping APs, then normalizes this value over the number of clients connected to the AP. 
+		
+		\subsubsection{Reassignment}
+		If the resultant normalized value is over a global threshold \(T\), to be defined and tuned by the network administrator, the server will direct the AP to reassign a proportional number of clients to the corresponding neighboring APs.
 		
 		\subsection{Network Analytics}
 		In addition to client assignment routing, the server logs a snapshot of network traffic on each AP every second for IS\&T records. Although each individual AP only updates the server every 30 seconds to keep traffic on the server minimized, a second-by-second snapshot of every AP captures the state and load of the whole network with reasonable resolution.
