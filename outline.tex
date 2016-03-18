@@ -6,10 +6,10 @@
 
 \begin{document}
 	
-	\title{Lit Banjo; Keen Hoes:\\a 6.033 Design Project}
+	\title{Flux Vector Network Optimization:\\a 6.033 Design Project}
 	
 	
-	\author{Obasi Onuoha, Kenneth Friedman, Joel Gustafson}% <-this % stops a space
+	\author{Joel Gustafson, Obasi Onuoha, Kenneth Friedman}% <-this % stops a space
 	
 	% The paper headers
 	\markboth{6.033: Computer Systems Engineering, MIT, Spring 2016}{}
@@ -25,17 +25,17 @@
 		\maketitle
 		
 		\section{High Level System Overview}
-		In large institutions, such as MIT, it is necessary to have a wireless networking system that allows a very large number of devices to connect to the internet. At MIT, there are specific requirements for a successful wireless network. The network must have acceptable performance, allow for high network utilization under heavy load, and collect data to aid in network management.
-		
-		Here, we propose a system that intelligently connects wireless devices to suitable access points. Our system enables all of the previously mentioned requirements, while placing a design focus on simplicity. There are a large number of IST employees that need to have a complete understanding of the system. After satisfying the required goals, simplicity is the most import design focus because it enables all employees to quickly develop a complete understanding of the system. After simplicity, we focus on scalability and performance. These are important for two reasons. First, for days of excess traffic, such as Campus Preview Weekend. Second, for periods throughout the day where traffic spikes, such as near the top of each hour (when many students are in the halls between classes).
-		
-		The rest of this section will discuss the three modules of our system and how the modules interact with one another.
+		MIT is a large, highly institution; as such, it requires a robust wireless networking system.  This paper responds to the RFP sent out by the 6.033 course staff. As such it addresses  the specific requirements therein; the proposed system will connect all clients to a nearby AP with acceptable performance levels, it will allow for high network utilization even under periods of heavy load, and it will collect network usage data to aid MIT IS\&T in network management.\\
+		\\
+		Beyond the requirements established in the RFP, the proposed system adheres to three primary design goals: simplicity, scalability, and performance. There are many devices involved in the MIT wireless network and there are many people tasked to manage them. Consequently, the proposed system strives for simplicity to allay management difficulties and ease implementation. To that end, the majority of computation and decision making is relegated to the server module. This means that most updates will only have to take place in one location. It also means that any server side optimization model which complies with the proposed communication standards could be slotted into the system with very little, if any, changes to the remaining network infrastructure.\\
+		\\
+		Next, focus was placed on the twin goals of scalability and performance. MIT continues to grow in both human and geographic size. Consequently, the proposed system needs to be robust against changes in both the shape of the network and the number of users. Additionally, MIT hosts many events which radically increase the number of users to a relatively small portions of the network; the proposed system needs to handle local user spikes very well. This dovetails with performance, as all of these additional users will expect reasonable levels of speed and connectivity.
 		
 		\subsection{System Modules}
-		The system contains three modules. The first type of module is the client. A client is any device that wants to wirelessly connect to MIT's network. Examples include laptops, smartphones, and tablets. Each client has a controller, which contains information about the requirements of the given client. The second type of module is the access point, or AP. APs are located throughout MIT's campus, and they contain client information as well as provide network access. Finally, the third module is the server. The server is the central component that stores information and provides instructions.
+		The system contains three modules. The first module is the client, which is any device that wants to wirelessly connect to MIT's network. Each client has a controller, which contains information about the requirements of the given client. The second type of module is the access point, or AP. APs are located throughout MIT's campus, and they contain client information and provide network access. Finally, the third module is the server. The server is the central component that stores information and issues instructions.
 		
 		\subsection{Module Interaction}
-		There is a straightforward interaction model between the three modules. Clients communicate information to APs. APs receive information from clients, and provide information to the server. The server then processes the incoming information and responds to the server with information about which clients need to switch APs. The APs also provide the server with status information on a regular basis. This overview can be seen in Figure \ref{fig:overview}. 
+		There is a straightforward interaction model between the three modules. Clients communicate information to APs. APs synthesize information from clients, and send that data to the server. The server then processes the incoming information and sends instructions to APs about which clients need to switch APs. The server also logs the network state for analytic purposes. This overview can be seen in Figure \ref{fig:overview}. 
 		
         \begin{figure}
             \includegraphics[width=\linewidth]{overviewDiagram.png}
@@ -43,14 +43,12 @@
             \label{fig:overview}
         \end{figure}
 		
-		%\subsubsection{Subsubsection Heading Here}
-		%Subsubsection text here.
 		
 		\section{Client}
 		Clients have a simple and straightforward interaction. Each client contains a monitor and a controller. The monitor records the performance of the application running on the client. The controller takes the monitors information and sends it to the AP. The controller also listens for the APs command. The details of the communication are described in detail in section 5.1.
 		
 		\section{Access Points}
-		Networks can have tens of thousands of access points (APs), and may install, move, or remove them frequently. In order to keep all the access points easily maintainable, our system design uses AP primarily as thin clients to forward data and requests to and from the central server and the client, simplifying the design and minimizing AP logic. This section provides a high-level overview of the functions of each AP beyond serving client requests for data from the outside internet, while section 5 describes the technical specifications for communication between network devices.
+		Networks can have tens of thousands of access points (APs), and may install, move, or remove them frequently. In order to keep all the access points easily maintainable, the proposed system design uses AP primarily as thin clients to forward data and requests to and from the central server and the client, simplifying the design and minimizing AP logic. This section provides a high-level overview of the functions of each AP beyond serving client requests for data from the outside internet, while section 5 describes the technical specifications for communication between network devices.
 		
 		\subsection{Client Connection}
 		When a client connects to an AP, the AP forwards the client's initial connection message to the server, as detailed in sections 5.1 and 5.3. At this point, both the AP and the client assume that the client will remain connected to the AP unless explicitly reassigned by the server - a response is not needed or expected. This both reduces the number of messages and preserves a moderately functional network in event of a server failure.
@@ -139,7 +137,7 @@
 		Where \textit{bld} is a 12-bit binary integer specifying the building number of the desired AP and \textit{rm} is a 12-bit integer specifying the room number of the desired AP.
 		
 		\section{Conclusion}
-		We have presented this proposal in order to improve the quality of the MIT wireless network. We designed the system to be extremely scalable.  Utilizing a neural net allows the system to constantly update its assignment priorities as the network and its needs grow and change. Additionally, the adoption of this architecture realizes a very high performance system. Constant and consistent optimization ensures that desirable outcomes will be regularly attained. Finally, our system places the primary load of computation on the server. This greatly simplifies the system and means that the majority of changes will not need to be propagated through the network.\\
+		We have presented this proposal in order to improve the quality of the MIT wireless network. We designed the system to be extremely scalable.  Utilizing a neural net allows the system to constantly update its assignment priorities as the network and its needs grow and change. Additionally, the adoption of this architecture realizes a very high performance system. Constant and consistent optimization ensures that desirable outcomes will be regularly attained. Finally, the proposed system places the primary load of computation on the server. This greatly simplifies the system and means that the majority of changes will not need to be propagated through the network.\\
 		\\
 		Future work will require us to train the neural net and to evaluate the performance gains.
 		
