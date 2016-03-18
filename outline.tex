@@ -1,6 +1,7 @@
 \documentclass[10pt,journal,compsoc]{IEEEtran}
 \usepackage{amsmath}
 \hyphenation{op-tical net-works semi-conduc-tor}
+\usepackage{graphicx}
 
 
 \begin{document}
@@ -31,9 +32,16 @@
 		The rest of this section will discuss the three modules of our system and how the modules interact with one another.
 		
 		\subsection{System Modules}
+		The system contains three modules. The first type of module is the client. A client is any device that wants to wirelessly connect to MIT's network. Examples include laptops, smartphones, and tablets. Each client has a controller, which contains information about the requirements of the given client. The second type of module is the acceess point, or AP. APs are located throughout MIT's campus, and they contain client information as well as provide network access. Finally, the third module is the server. The server is the central component that stores information and provides instructions.
 		
 		\subsection{Module Interaction}
-		Subsection text here.
+		There is a straightforward interaction model between the three modules. Clients communicate information to APs. APs receive information from clients, and provide information to the server. The server then processes the incoming information and responds to the server with information about which clients need to switch APs. The APs also provide the server with status information on a regular basis. This overview can be seen in Figure \ref{fig:overview}. 
+		
+        \begin{figure}
+            \includegraphics[width=\linewidth]{overviewDiagram.png}
+            \caption{High Level Module Interaction Overview}
+            \label{fig:overview}
+        \end{figure}
 		
 		%\subsubsection{Subsubsection Heading Here}
 		%Subsubsection text here.
