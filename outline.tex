@@ -47,16 +47,28 @@
 		Say no to drugs, kids.
 		
 		\section{Server}
-		The majority of the computational complexity is handled by a central server, connected via reliable wired connection to all APs, which aggregates network data and handles client reassignment. The server is explicitly designed to be both unnecessary and modular: the network will still function, albeit naively, upon server failure, and the specific algorithms used to determine client reassignment are independent of the rest of the system. In this context, the server can be viewed as an aggressive optimization layer on top of the main network infrastructure. This section details the components of the central server and their interactions with the rest of the system.
+		The majority of the computational complexity is handled by a central server, connected via reliable wired connection to all APs, which aggregates network data and manages client reassignment. The server is explicitly designed to be both unnecessary and modular: the network will still function, albeit naively, upon server failure, and the specific algorithms used to determine client reassignment are independent of the rest of the system. In this context, the server can be viewed as an aggressive optimization layer on top of the main network infrastructure that computes a relative local load factor for each AP and dispatches client reassignment messages to balance this accordingly. This section details the components of the central server and their interactions with the rest of the system.
 		
 		\subsection{Network State Object}
-		The server maintains the state of traffic in network in a hash table indexed by AP MAC addresses. The values of the hash table are pointers to objects that are also the nodes of an undirected network graph, which share links when their corresponding APs are within approximately 500 feet of each other in the real world. These links must be updated manually when APs are added, removed, or relocated. The nodes store static properties about the AP (such as its precise location), updated numbers on its network load (such as number of connected clients and generated/successful transmission bits) from the network status updates that the APs send the sever, and a list of pointers to nodes of APs within a 500-foot radius.
+		The server maintains network state in a custom data structure that is both a hash table and an undirected graph. There is one node for each AP, which must be manually created or deleted when APs are added or removed. The hash table is indexed by AP MAC addresses, which map to objects that are the nodes of the undirected network graph. These objects store both static and dynamic properties of the corresponding AP:
+		\begin{itemize}
+			\item Precise location
+			\item Generated transmission bits
+			\item Successful transmission bits
+			\item Number of connected clients
+			\item Links to nodes of overlapping APs
+		\end{itemize}
+		The client count and transmission bit numbers are from the most recent AP update message, and so are never out-of-date by more than 30 seconds. Each nodes also store an association list of references to the nodes of APs whose signal coverage overlaps with its position, which can either be precomputed using geolocation and signal range data, or dynamically updated using client range information received from AP messages.
 		
 		\subsection{Client Assignment}
-		The primary role of the sever is dispatch client reassignment directives to balance load across APs. This routing function is computed by a neural net.
+		The primary role of the sever is to dispatch client reassignment directives to balance load across APs. Perfect equilibrium will rarely be possible, since clients are restricted to connecting to APs within their range, so the algorithm must make a best attempt at balancing each local graph individually. However, the network is composed of a continuous mesh of APs, not discrete local graphs, so the algorithm must scale across the entire mesh as well. We implement relative local load balancing in two steps: computing a load factor for each AP, and then computing the difference of load factors across each link. We call these differences flux vectors.
 		
-		\subsubsection{Neural Net}
-		BUZZWORDS%
+		\subsubsection{Load Factor}
+		This is done by computing a load factor \(L\) for each AP with the following equation:
+		\[L = something\]
+		
+		\subsubsection{Flux Vector}
+		Wow
 		
 		\subsection{Network Analytics}
 		In addition to client assignment routing, the server logs a snapshot of network traffic on each AP every second for IS\&T records. Although each individual AP only updates the server every 30 seconds to keep traffic on the server minimized, a second-by-second snapshot of every AP captures the state and load of the whole network with reasonable resolution.
