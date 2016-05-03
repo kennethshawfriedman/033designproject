@@ -148,6 +148,9 @@
 		\\
 		Every AP sends the IS\&T Server one message per client per connection. Additionally, every AP sends the server one status message every 30 seconds. None of these messages is larger than 16 bytes. The server sends at most one message to an AP per client per connection. These messages are 11 bytes. In the worst case, this uses less than one thousandth of a percent of the 1Gbps connection between an AP and the server.
 		
+		\subsection{Usage Statistic Latency}
+		Every 30 seconds, each AP sends the required usage statistics to the IS\&T server. The storing an exporting of these statistics is left to the server. Consequently, the server's model of the network state and usage is at most 30 seconds out of date. This means that IS\&T possess any usage data 30 seconds after it is collected.
+		
 		
 		\section{Conclusion}
 		We have presented this proposal in order to improve the quality of the MIT wireless network. We designed the system to be extremely scalable.  Utilizing a neural net allows the system to constantly update its assignment priorities as the network and its needs grow and change. Additionally, the adoption of this architecture realizes a very high performance system. Constant and consistent optimization ensures that desirable outcomes will be regularly attained. Finally, the proposed system places the primary load of computation on the server. This greatly simplifies the system and means that the majority of changes will not need to be propagated through the network.
