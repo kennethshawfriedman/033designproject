@@ -24,6 +24,8 @@
 		% make the title area
 		\maketitle
 		
+		%\titlepage
+		
 		\section{High Level System Overview}
 		MIT is a large, highly institution; as such, it requires a robust wireless networking system.  This paper responds to the RFP sent out by the 6.033 course staff. As such it addresses  the specific requirements therein; the proposed system will connect all clients to a nearby AP with acceptable performance levels, it will allow for high network utilization even under periods of heavy load, and it will collect network usage data to aid MIT IS\&T in network management.\\
 		\\
@@ -136,7 +138,18 @@
 		\begin{center}\textit{bld \textbar rm}\end{center}
 		Where \textit{bld} is a 12-bit binary integer specifying the building number of the desired AP and \textit{rm} is a 12-bit integer specifying the room number of the desired AP.
 		
+		\section{evaluation}
+		One of the most critical aspects of system design is evaluation. We will analyze the system and determine how well it achieves the design goals of simplicity, scalability, and performance. Additionally, we will evaluate the system against several metrics including communications overhead, various latencies, network utilization, and user happiness.
+		
+		\subsection{Communications Overhead}
+		With consideration to our design goal of simplicity, the system attempts to send as few messages as possible. This also assists with our goals of scalability and performance, as fewer messages means less strain on the network.\\
+		\\
+		System messages from the Client to the AP and from the AP to the client are both small and infrequent. The Client's sends an initial connection message to the AP exactly once per connection and the AP sends a reconnect message to the client at most once per connection. Additionally, the Client sends the AP a status message once every 30 seconds. None of these messages are larger than 21 bytes. Even if an AP is at maximum capacity with 128 Clients, these communications use only a trivial fraction of an AP's bandwidth.\\
+		\\
+		Every AP sends the IS\&T Server one message per client per connection. Additionally, every AP sends the server one status message every 30 seconds. None of these messages is larger than 16 bytes. The server sends at most one message to an AP per client per connection. These messages are 11 bytes. In the worst case, this uses less than one thousandth of a percent of the 1Gbps connection between an AP and the server.
+		
+		
 		\section{Conclusion}
-		We have presented this proposal in order to improve the quality of the MIT wireless network. We designed the system to be extremely scalable.  Utilizing a neural net allows the system to constantly update its assignment priorities as the network and its needs grow and change. Additionally, the adoption of this architecture realizes a very high performance system. Constant and consistent optimization ensures that desirable outcomes will be regularly attained. Finally, the proposed system places the primary load of computation on the server. This greatly simplifies the system and means that the majority of changes will not need to be propagated through the network.\\
+		We have presented this proposal in order to improve the quality of the MIT wireless network. We designed the system to be extremely scalable.  Utilizing a neural net allows the system to constantly update its assignment priorities as the network and its needs grow and change. Additionally, the adoption of this architecture realizes a very high performance system. Constant and consistent optimization ensures that desirable outcomes will be regularly attained. Finally, the proposed system places the primary load of computation on the server. This greatly simplifies the system and means that the majority of changes will not need to be propagated through the network.
 		
 \end{document}
