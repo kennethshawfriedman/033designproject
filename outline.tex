@@ -179,7 +179,7 @@
 		Every 30 seconds, each AP sends the required usage statistics to the IS\&T server. The storing an exporting of these statistics is left to the server. Consequently, the server's model of the network state and usage is at most 30 seconds out of date. This means that IS\&T possess any usage data 30 seconds after it is collected.
 		
 		\subsection{Network Utilization}
-		Keep it, keep the struggle.
+		Our systems allows for high network utilization, even under heavy load. The heavy lifting of the optimization is done on the server, which can handle heavy loads, any given AP will not struggle have to struggle with optimizing their clients. All APs report to the server every two minutes. Therefore the biggest performance factor in the server's ability to process information is the number of APs, not the network load.
 		
 		\subsection{Security}
 		Because the MAC addresses of clients do not change, it is theoretically possible for an attacker to track the locations of individual clients. Potentially, by cross-referencing this information with additional data, an attacker may be able to determine the real-world identities of the users of the clients.\\
