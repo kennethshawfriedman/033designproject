@@ -6,9 +6,9 @@
 \begin{document}
 \begin{titlepage}
 	\centering
-	{\scshape 6.033: Computer Systems Engineering  \par}
+	{\scshape Massachusetts Institute of Technology  \par}
 	\vspace{3cm}
-	{\scshape\LARGE Massachusetts Institute of Technology \par}
+	{\scshape\LARGE 6.033: Computer Systems Engineering\par}
 	\vspace{1cm}
 	{\scshape\Large Final Design Project \par}
 	\vspace{1.5cm}
@@ -174,6 +174,12 @@
 		\subsection{Usage Statistic Latency}
 		Every 30 seconds, each AP sends the required usage statistics to the IS\&T server. The storing an exporting of these statistics is left to the server. Consequently, the server's model of the network state and usage is at most 30 seconds out of date. This means that IS\&T possess any usage data 30 seconds after it is collected.
 		
+		\subsection{Security}
+		Because the MAC addresses of clients do not change, it is theoretically possible for an attacker to track the locations of individual clients. Potentially, by cross-referencing this information with additional data, an attacker may be able to determine the real-world identities of the users of the clients.\\
+		\\
+		The system stores the network state at any given time, but not for any time. This is an important distinction. This means that if an attacker were to penetrate the IS\&T server, they would be able to see an instantaneous snapshot of the network but they would not have access to any historical location data. This provides some protection from the aforementioned form of attack. However, a sophisticated attacker with continuous access to the IS\&T server could conceivably record this data and build their own historical model of the location data. This is a necessary risk, as the system requires that server be aware of the location of the clients in order to perform network optimization.\\
+		\\
+		Further mitigating security risk, APs are only aware of and store information about the clients which are actively communicating with them. This helps address security concerns by limiting the number of sources from which an attacker could glean compromising information.
 		
 		\section{Conclusion}
 		We have presented this proposal in order to improve the quality of the MIT wireless network. We designed the system to be extremely scalable.  Utilizing a neural net allows the system to constantly update its assignment priorities as the network and its needs grow and change. Additionally, the adoption of this architecture realizes a very high performance system. Constant and consistent optimization ensures that desirable outcomes will be regularly attained. Finally, the proposed system places the primary load of computation on the server. This greatly simplifies the system and means that the majority of changes will not need to be propagated through the network.
