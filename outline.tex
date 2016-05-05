@@ -55,6 +55,9 @@
         The primary design goal for this system is simplicity. There are a large number of IST employees that need to have a complete understanding of the system. Also, many members of IST are students. Therefore, the turn over rate for employees is higher than in corporate organizations. Because there will be an influx of new employees each year, the system must be kept as simple as possible for it to be easily taught and understood by new members.\\
         \\
         After simplicity, focus was placed on the goals of scalability and performance. MIT often grows in human and geographic size. The proposed system must be robust against changes in both the shape of the network and the number of users. Additionally, MIT hosts many events which radically increase the number of users to a relatively small portions of the network; the proposed system needs to handle local user spikes very well. This dovetails with performance, as all of these additional users will expect reasonable levels of speed and connectivity. In summary, the overarching design goals are simplicity, performance, and scalability. \\
+        \subsection{Subsystems}
+        On a high level, our system consists of two relatively disjoint subsystems, each designed to handle different major use cases to optimize for difference major design goals. The first, lower-level subsystem is a small, completely distributed, symmetric, and stateless algorithm running on all APs that quickly assigns new clients to a reasonable AP upon connecting for the first time. The second, higher-level subsystem is an aggressive, computationally-intensive optimization algorithm that continuously runs on a centralized server, which dispatches client reassignment orders to clients through the APs. Although these subsystems are the highest-level partitions of our design, the remainder of this report will be organized by the physical modules involved and their interactions with each other.\\
+        \\
 		\subsection{System Modules}
 		The system contains three modules. The first module is the client, which is any device that wants to wirelessly connect to MIT's network. Each client has a controller, which contains information about the requirements of the given client. The second type of module is the access point, or AP. APs are located throughout MIT's campus, and they contain client information and provide network access. Finally, the third module is the server. The server is the central component that stores information and issues instructions.
 		
@@ -166,8 +169,8 @@
 		\begin{center}\textit{bld \textbar rm}\end{center}
 		Where \textit{bld} is a 12-bit binary integer specifying the building number of the desired AP and \textit{rm} is a 12-bit integer specifying the room number of the desired AP.
 		
-		\section{evaluation}
-		One of the most critical aspects of system design is evaluation. We will analyze the system and determine how well it achieves the design goals of simplicity, scalability, and performance. Additionally, we will evaluate the system against several metrics including communications overhead, various latencies, network utilization, and user happiness.
+		\section{Evaluation}
+		One of the most critical aspects of system design is evaluation. In this section, we will analyze the system and determine how well it achieves the design goals of simplicity, scalability, and performance. Additionally, we will evaluate the system against several metrics including communications overhead, various latencies, network utilization, and user happiness.
 		
 		\subsection{Communications Overhead}
 		With consideration to our design goal of simplicity, the system attempts to send as few messages as possible. This also assists with our goals of scalability and performance, as fewer messages means less strain on the network.\\
@@ -176,8 +179,16 @@
 		\\
 		Every AP sends the IS\&T Server one message per client per connection. Additionally, every AP sends the server one status message every 30 seconds. None of these messages is larger than 16 bytes. The server sends at most one message to an AP per client per connection. These messages are 11 bytes. In the worst case, this uses less than one thousandth of a percent of the 1Gbps connection between an AP and the server.
 		
+		\subsection{Connection Time}
+		The amount of time needed for a client to connect to an AP is a critial metric to the success of the system. If all clients are optimally connected to APs, but that optimal connection takes a long period of time, users will not be happy.\\
+		\\
+		However, the connection time in our system occurs very quickly. If there are any APs for the client to connect to, our system guarantees that a connection will be made within 0.5 seconds. This guarantee is possible because the client will check every possible connection and connect to the strongest possible AP that allows a connection. It does not have to wait for any other part of the system to run analysis before the initial connection. 
+		
 		\subsection{Usage Statistic Latency}
 		Every 30 seconds, each AP sends the required usage statistics to the IS\&T server. The storing an exporting of these statistics is left to the server. Consequently, the server's model of the network state and usage is at most 30 seconds out of date. This means that IS\&T possess any usage data 30 seconds after it is collected.
+		
+		\subsection{Network Utilization}
+		Keep it, keep the struggle.
 		
 		\subsection{Security}
 		Because the MAC addresses of clients do not change, it is theoretically possible for an attacker to track the locations of individual clients. Potentially, by cross-referencing this information with additional data, an attacker may be able to determine the real-world identities of the users of the clients.\\
