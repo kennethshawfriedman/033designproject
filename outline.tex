@@ -6,7 +6,7 @@
 \begin{document}
 \begin{titlepage}
 	\centering
-	{\scshape 6.033 Computer Systems Engineering  \par}
+	{\scshape 6.033: Computer Systems Engineering  \par}
 	\vspace{3cm}
 	{\scshape\LARGE Massachusetts Institute of Technology \par}
 	\vspace{1cm}
@@ -17,6 +17,8 @@
 	{\Large\itshape Kenneth Friedman\par}
 		{\Large\itshape Joel Gustafson \par}
 			{\Large\itshape Obasi Onuoha \par}
+	\vspace{.25cm}
+	\textit{{\small\{ksf,joelg,ojonuoha\}@mit.edu}}
 	\vfill
 	Recitation Instructor\par
 	Asaf Cohen. R12, R14
@@ -62,7 +64,9 @@
 		
 		
 		\section{Client}
-		Clients have a simple and straightforward interaction. Each client contains a monitor and a controller. The monitor records the performance of the application running on the client. The controller takes the monitors information and sends it to the AP. The controller also listens for the APs command. The details of the communication are described in detail in section 5.1.
+		In order to preserve our goal of simplicity, the client performs little work with regards to the overall network. Each client contains a monitor and a controller. The monitor records the performance of the application running on the client. The controller takes the monitors data prepares it to send to the AP. The details of the communication are described in detail in section 5.1.\\
+		\\
+		Additionally, the controller is tasked with the initially deciding to which AP the client should connect. Again, it does this very simply. Every AP broadcasts a heartbeat message every 30ms. The controller listens on channels 1-11 for 30ms each. It records every AP within range and then selects the one with the strongest signal for the initial connection.
 		
 		\section{Access Points}
 		Networks can have tens of thousands of access points (APs), and may install, move, or remove them frequently. In order to keep all the access points easily maintainable, the proposed system design uses AP primarily as thin clients to forward data and requests to and from the central server and the client, simplifying the design and minimizing AP logic. This section provides a high-level overview of the functions of each AP beyond serving client requests for data from the outside internet, while section 5 describes the technical specifications for communication between network devices.
@@ -76,7 +80,11 @@
 		Clients send their updated network demands and performance statistics to their AP at 30-second intervals. The AP aggregates these numbers and relays them to the server every 30 seconds. However, since clients operate independently of each other, each AP maintains a hash table mapping its clients' MAC addresses to their 64-bit \textit{data} integers from the update messages detailed in section 5.1. When an AP receives an update message from a client, it writes the value in the hash table at the client's MAC address key to be the 3-tuple \((G, A, T_S\)), where \(G\) is 32-bit integer from the first half of \textit{data}, \(A\) is the 32-bit integer from the second half of \textit{data}, and the timestamp \(T_S\) is the current time in seconds (only the seconds - 4 bits - are necessary, although this is an implementation detail). When the AP needs to send  update message to the server, it first computes \(G_S\) and \(A_S\), which are the sum of \(G\) and \(A\), respectively, for every value in the AP's hash table whose timestamp \(T_S\) is less than 35 seconds old. If a \(T_S\) is older than 35 seconds, the corresponding key is deleted from the table and the client is assumed to be disconnected. The AP then sends \(G_S\) and \(A_S\) to the server, as described in section 5.3.
 		
 		\section{Server}
-		The majority of the computational complexity is handled by a central server, connected via reliable wired connection to all APs, which aggregates network data and manages client reassignment. The server is explicitly designed to be both unnecessary and modular: the network will still function, albeit naively, upon server failure, and the specific algorithms used to determine client reassignment are independent of the rest of the system. In this context, the server can be viewed as an aggressive optimization layer on top of the main network infrastructure that computes a relative local load factor for each AP and dispatches client reassignment messages to balance this accordingly. This section details the components of the central server and their interactions with the rest of the system.
+		The majority of the computational complexity is handled by a central server, connected via reliable wired connection to all APs, which aggregates network data and manages client reassignment. The server is explicitly designed to be both unnecessary and modular: the network will still function, albeit naively, upon server failure, and the specific algorithms used to determine client reassignment are independent of the rest of the system. In this context, the server can be viewed as an aggressive optimization layer on top of the main network infrastructure that computes a relative local load factor for each AP and dispatches client reassignment messages to balance this accordingly. \\
+		\\
+		This dovetails well with the design goals of simplicity and performance. From a simplicity standpoint, a system such as this is much easier to design, deploy, and maintain. Additionally, it reduces potential error sources significantly. With regards to performance, designing the server as an optimization layer removes it as a point of failure. A system designed in this manner does not have a single point of failure, effectively guaranteeing some performance even under the most adverse conditions.\\
+		\\
+		This section details the components of the central server and their interactions with the rest of the system.
 		
 		\subsection{Network State Object}
 		The server maintains network state in a custom data structure that is both a hash table and an undirected graph. There is one node for each AP, which must be manually created or deleted when APs are added or removed. The hash table is indexed by AP MAC addresses, which map to objects that are the nodes of the undirected network graph. These objects store both static and dynamic properties of the corresponding AP:
@@ -169,5 +177,8 @@
 		
 		\section{Conclusion}
 		We have presented this proposal in order to improve the quality of the MIT wireless network. We designed the system to be extremely scalable.  Utilizing a neural net allows the system to constantly update its assignment priorities as the network and its needs grow and change. Additionally, the adoption of this architecture realizes a very high performance system. Constant and consistent optimization ensures that desirable outcomes will be regularly attained. Finally, the proposed system places the primary load of computation on the server. This greatly simplifies the system and means that the majority of changes will not need to be propagated through the network.
+		
+		\section{Acknowledgments}
+		The authors would like to thank Dr. Asaf Cohen, Jared Berezin, and Anubahv Jain for helpful discussions and useful feedback.
 		
 \end{document}
