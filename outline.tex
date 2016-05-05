@@ -41,13 +41,15 @@
 			
 		% make the title area
 		
-		%\titlepage
-		
 		\section{High Level System Overview}
-		MIT is a large, highly institution; as such, it requires a robust wireless networking system.  This paper responds to the RFP sent out by the 6.033 course staff. As such it addresses  the specific requirements therein; the proposed system will connect all clients to a nearby AP with acceptable performance levels, it will allow for high network utilization even under periods of heavy load, and it will collect network usage data to aid MIT IS\&T in network management.\\
-		\\
-		Beyond the requirements established in the RFP, the proposed system adheres to three primary design goals: simplicity, scalability, and performance. There are many devices involved in the MIT wireless network and there are many people tasked to manage them. Consequently, the proposed system strives for simplicity to allay management difficulties and ease implementation. To that end, the majority of computation and decision making is relegated to the server module. This means that most updates will only have to take place in one location. It also means that any server side optimization model which complies with the proposed communication standards could be slotted into the system with very little, if any, changes to the remaining network infrastructure.\\
-		\\
+		
+		In large institutions, such as MIT, it is necessary to have a wireless networking system that allows a very large number of devices to connect to the internet. At MIT, there are a number of specific requirements neeeded for a successful wireless network. The network must have acceptable performance, allow for high network utilization under heavy load, and collect data to aid in network management. This paper proposes an effective design to connecting clients to MIT's wireless network.\\
+        \\
+        In this section, the design goals, system modules and module interactions are discussed.
+        
+        \subsection{Design Goals}
+        
+         
 		Next, focus was placed on the twin goals of scalability and performance. MIT continues to grow in both human and geographic size. Consequently, the proposed system needs to be robust against changes in both the shape of the network and the number of users. Additionally, MIT hosts many events which radically increase the number of users to a relatively small portions of the network; the proposed system needs to handle local user spikes very well. This dovetails with performance, as all of these additional users will expect reasonable levels of speed and connectivity.
 		
 		\subsection{System Modules}
