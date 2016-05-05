@@ -32,14 +32,10 @@
 	% The paper headers
 	\markboth{6.033: Computer Systems Engineering, MIT, Spring 2016}{}
 	
-	\IEEEtitleabstractindextext{%
-		\begin{abstract}
-			Improving the performance of the wireless network is of obvious interest to MIT. The task is to implement a system which optimizes the connections between clients and the MIT wireless network in order to improve the overall performance of the network. This paper proposes such a system.\\
-			\\
-			The design revolves around three modules: each client will have a \emph{controller} which communicates its requirements to an \emph{access point} which collects data about the traffics and clients to send to the \emph{server}. The \emph{server} ingests data about the network, stores it, and distributes connection instructions to the rest of the network.
-		\end{abstract}}
-			
-		% make the title area
+    \section{Abstract}
+	    Improving the performance of the wireless network is of obvious interest to MIT. The task is to implement a system which optimizes the connections between clients and the MIT wireless network in order to improve the overall performance of the network. This paper proposes such a system.\\
+		\\
+		The design revolves around three modules: each client will have a \emph{controller} which communicates its requirements to an \emph{access point} which collects data about the traffics and clients to send to the \emph{server}. The \emph{server} ingests data about the network, stores it, and distributes connection instructions to the rest of the network.
 		
 		\section{High Level System Overview}
 		
@@ -49,7 +45,12 @@
         
         \subsection{Design Goals}
         
-         
+        The primary design goal for this system is simplicity. There are a large number of IST employees that need to have a complete understanding of the system. Also, many members of IST are students. Therefore, the turn over rate for employees is higher than in corporate organizations. Because there will be an influx of new employees each year, the system must be kept as simple as possible for it to be easily taught and understood by new members.\\
+        \\
+        After satisfying the required goals, simplicity is the most import design focus because it enables all employees to quickly develop a complete understanding of the system. After simplicity, we focus on scalability and performance. These are important for two reasons. First, for days of excess traffic, such as Campus Preview Weekend. Second, for periods throughout the day where traffic spikes, such as near the top of each hour (when many students are in the halls between classes).
+        
+        
+        
 		Next, focus was placed on the twin goals of scalability and performance. MIT continues to grow in both human and geographic size. Consequently, the proposed system needs to be robust against changes in both the shape of the network and the number of users. Additionally, MIT hosts many events which radically increase the number of users to a relatively small portions of the network; the proposed system needs to handle local user spikes very well. This dovetails with performance, as all of these additional users will expect reasonable levels of speed and connectivity.
 		
 		\subsection{System Modules}
