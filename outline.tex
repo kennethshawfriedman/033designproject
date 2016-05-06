@@ -187,9 +187,6 @@
 		\\
 		In our system, the initial connection occurs very quickly. Our system guarantees that a connection will be made within 0.5 seconds if there is an AP with which a connection can be established. This guarantee is possible because the client chosses the AP to which hit initially connects independently of the rest of the system, as specified earlier in the paper. It does not have to wait for any other part of the system to run analysis before the initial connection. The system takes 5 milliseconds to switch channels, and stays on a channel for 35 milliseconds. The client will check all 11 channels, which results in a time of (35ms+5ms)*11= 440 milliseconds, under 0.5 seconds.
 		
-		\subsection{User Happiness}
-		User happiness 
-		
 		\subsection{Usage Statistic Latency}
 		Every 30 seconds, each AP sends the required usage statistics to the IS\&T server. The storing and exporting of these statistics is left to the server. Consequently, the server's model of the network state and usage is at most 30 seconds out of date. This means that IS\&T possess any usage data 30 seconds after it is collected.
 		
