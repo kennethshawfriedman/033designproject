@@ -190,6 +190,9 @@
 		\subsection{Usage Statistic Latency}
 		Every 30 seconds, each AP sends the required usage statistics to the IS\&T server. The storing and exporting of these statistics is left to the server. Consequently, the server's model of the network state and usage is at most 30 seconds out of date. This means that IS\&T possess any usage data 30 seconds after it is collected.
 		
+		\subsection{Scalability}
+		The largest scale-limiting factor in the overall design is the computational capacity of the centralized server, which puts a hard upper limit on the number of APs in the network. However, under this limit, the server's performance is not affected by an influx of client connections since the flux vector algorithm's complexity only scales with APs, not clients. Therefore the only limiting factor on adding clients and keeping users happy is the bandwith of the APs themselves.
+		
 		\subsection{Network Utilization}
 		Our systems allows for high network utilization, even under heavy load. The heavy lifting of the optimization is done on the server, which can handle heavy loads; individual APs do not have to handle individually optimizing their clients. All APs report to the server every 30 seconds. Therefore the biggest performance factor in the server's ability to process information is the number of APs, not the network load.\\
 		\\
