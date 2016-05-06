@@ -41,7 +41,7 @@
 		
 		\section{High Level System Overview}
 		
-		In large institutions, such as MIT, it is necessary to have a wireless networking system that allows a very large number of devices to connect to the internet. At MIT, there are a number of specific requirements neeeded for a successful wireless network. The network must have acceptable performance, allow for high network utilization under heavy load, and collect data to aid in network management. This paper proposes an effective design fork connecting clients to MIT's wireless network.\\
+		In large institutions, such as MIT, it is necessary to have a wireless networking system that allows a very large number of devices to connect to the internet. At MIT, there are a number of specific requirements neeeded for a successful wireless network. The network must have acceptable performance, allow for high network utilization under heavy load, and collect data to aid in network management. This paper proposes an effective design for connecting clients to MIT's wireless network.\\
         \\
         In this section, the design goals, subsystem divisions, system modules, and module interactions are discussed.
         
@@ -185,7 +185,7 @@
 		\subsection{Connection Time}
 		The amount of time needed for a client to connect to an AP is a critical metric to the success of the system. If the time needed to connect is too long, users will not be happy --- even if the connection is the optimal.\\
 		\\
-		In our system, the connection time in our system occurs very quickly. Our system guarantees that a connection will be made within 0.5 seconds if there is an AP in which a connection can be made. This guarantee is possible because the client will check every possible connection and connect to the strongest possible AP that allows a connection. It does not have to wait for any other part of the system to run analysis before the initial connection. The system takes 5 miliseconds to switch channels, and stays on a channel for 35 miliseconds. The client will check all 11 channels, which results in a time of \((35ms+5ms)*11=\) 440 miliseconds, under 0.5 seconds.
+		In our system, the initial connection occurs very quickly. Our system guarantees that a connection will be made within 0.5 seconds if there is an AP with which a connection can be established. This guarantee is possible because the client chosses the AP to which hit initially connects independently of the rest of the system, as specified earlier in the paper. It does not have to wait for any other part of the system to run analysis before the initial connection. The system takes 5 milliseconds to switch channels, and stays on a channel for 35 milliseconds. The client will check all 11 channels, which results in a time of (35ms+5ms)*11= 440 milliseconds, under 0.5 seconds.
 		
 		\subsection{User Happiness}
 		User happiness 
