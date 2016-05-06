@@ -104,10 +104,10 @@
 		The client count and transmission bit numbers are from the most recent AP update message, and so are never out-of-date by more than 30 seconds. Each nodes also store an association list of references to the nodes of any APs whose signal coverage significantly overlaps with its own, which can either be precomputed using geolocation and signal range data, or dynamically updated using aggregated client range information received from AP messages. This is deliberately underspecified, as the optimal configuration will depend heavily on the specific architecture and layout of the implementation network. Finally, Load Factor and Flux Vector are described in sections 4.2.1 and 4.2.2, respectively.
 		
 		\subsection{Client Assignment}
-		The primary role of the server is to dispatch client reassignment directives to balance load across APs. Perfect equilibrium will rarely be possible, since clients are restricted to connecting to APs within their range, so the algorithm must make a best attempt at balancing each local graph individually. However, the network is composed of a continuous mesh of APs, not discrete local graphs, so the algorithm must scale across the entire mesh as well. We implement relative local load balancing in three steps: computing a load factor for each AP, and computing the difference of load factors across each link, called ``flux vectors", and sending reassignment messages for flux vectors greater than a normalized capacity threshold. The following sections elaborate on each step of this process.
+		The primary role of the server is to dispatch client reassignment directives to balance load across APs. Perfect equilibrium will rarely be possible, since clients are restricted to connecting to APs within their range, so the algorithm must make a best attempt at balancing each local graph individually. However, the network is composed of a continuous mesh of APs, not discrete local graphs, so the algorithm must scale across the entire mesh as well. We implement relative local load balancing in three steps: computing a load factor for each AP, and computing the difference of load factors across each link, called "flux vectors", and sending reassignment messages for flux vectors greater than a normalized capacity threshold. The following sections elaborate on each step of this process.
 		
 		\subsubsection{Load Factors}
-		This is done by computing a load factor \(L\) for each AP with the following equation:
+		A load factor, \(L\), is computed for each AP based on the equation:
 		\[L = \dfrac{G + (G-A)^2}{C}\]
 		where \(G\) is the number of generated bits, \(A\) is the number of successfully transmitted bits in the last AP update, and \(C\) is the capacity of the AP in megabits per second (either 54 or 96). This relation was chosen as the load factor to give extra (quadratic) weight to information overload, when the AP becomes the communication bottleneck for the client, and to provide a consistent, normalized metric across both high-capacity and normal APs. Load factors are updated continuously on each AP status message.
 		
@@ -166,7 +166,7 @@
 		Where \textit{bld} is a 12-bit binary integer specifying the building number of the desired AP and \textit{rm} is a 12-bit integer specifying the room number of the desired AP.
 		
 \section{Evaluation}
- -		One of the most critical aspects of system design is evaluation. We will analyze the system and determine how well it achieves the design goals of simplicity, scalability, and performance. Additionally, we will evaluate the system against several metrics including communications overhead, various latencies, network utilization, and user happiness.
+		One of the most critical aspects of system design is evaluation. In this section, we will analyze the system and determine how well it achieves the design goals of simplicity, scalability, and performance. Additionally, we will evaluate the system against several metrics including communications overhead, various latencies, network utilization, and user happiness.
 		
 		\subsection{Communications Overhead}
 		With consideration to our design goal of simplicity, the system attempts to send as few messages as possible. This also assists with our goals of scalability and performance, as fewer messages means less strain on the network.\\
