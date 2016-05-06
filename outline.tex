@@ -107,7 +107,7 @@
 		The primary role of the server is to dispatch client reassignment directives to balance load across APs. Perfect equilibrium will rarely be possible, since clients are restricted to connecting to APs within their range, so the algorithm must make a best attempt at balancing each local graph individually. However, the network is composed of a continuous mesh of APs, not discrete local graphs, so the algorithm must scale across the entire mesh as well. We implement relative local load balancing in three steps: computing a load factor for each AP, and computing the difference of load factors across each link, called "flux vectors", and sending reassignment messages for flux vectors greater than a normalized capacity threshold. The following sections elaborate on each step of this process.
 		
 		\subsubsection{Load Factors}
-		A load factor, \(L\), is computed for each AP based on the equation:
+		This is done by computing a load factor \(L\) for each AP with the following equation:
 		\[L = \dfrac{G + (G-A)^2}{C}\]
 		where \(G\) is the number of generated bits, \(A\) is the number of successfully transmitted bits in the last AP update, and \(C\) is the capacity of the AP in megabits per second (either 54 or 96). This relation was chosen as the load factor to give extra (quadratic) weight to information overload, when the AP becomes the communication bottleneck for the client, and to provide a consistent, normalized metric across both high-capacity and normal APs. Load factors are updated continuously on each AP status message.
 		
