@@ -183,9 +183,9 @@
 		Every AP sends the IS\&T Server one message per client per connection. Additionally, every AP sends the server one status message every 30 seconds. None of these messages is larger than 16 bytes. The server sends at most one message to an AP per client per connection. These messages are 11 bytes. In the worst case, this uses less than one thousandth of a percent of the 1Gbps connection between an AP and the server.
 		
 		\subsection{Connection Time}
-		The amount of time needed for a client to connect to an AP is a critical metric to the success of the system. If all clients are optimally connected to APs, but that optimal connection takes a long period of time, users will not be happy.\\
+		The amount of time needed for a client to connect to an AP is a critical metric to the success of the system. If the time needed to connect is too long, users will not be happy --- even if the connection is the optimal.\\
 		\\
-		However, the connection time in our system occurs very quickly. If there are any APs for the client to connect to, our system guarantees that a connection will be made within 0.5 seconds. This guarantee is possible because the client will check every possible connection and connect to the strongest possible AP that allows a connection. It does not have to wait for any other part of the system to run analysis before the initial connection. 
+		In our system, the connection time in our system occurs very quickly. Our system guarantees that a connection will be made within 0.5 seconds if there is an AP in which a connection can be made. This guarantee is possible because the client will check every possible connection and connect to the strongest possible AP that allows a connection. It does not have to wait for any other part of the system to run analysis before the initial connection. The system takes 5 miliseconds to switch channels, and stays on a channel for 35 miliseconds. The client will check all 11 channels, which results in a time of \((35ms+5ms)*11=\) 440 miliseconds, under 0.5 seconds.
 		
 		\subsection{User Happiness}
 		User happiness 
