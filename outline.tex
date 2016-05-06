@@ -41,7 +41,7 @@
 		
 		\section{High Level System Overview}
 		
-		In large institutions, such as MIT, it is necessary to have a wireless networking system that allows a very large number of devices to connect to the internet. At MIT, there are a number of specific requirements neeeded for a successful wireless network. The network must have acceptable performance, allow for high network utilization under heavy load, and collect data to aid in network management. This paper proposes an effective design to connecting clients to MIT's wireless network.\\
+		In large institutions, such as MIT, it is necessary to have a wireless networking system that allows a very large number of devices to connect to the internet. At MIT, there are a number of specific requirements neeeded for a successful wireless network. The network must have acceptable performance, allow for high network utilization under heavy load, and collect data to aid in network management. This paper proposes an effective design fork connecting clients to MIT's wireless network.\\
         \\
         In this section, the design goals, subsystem divisions, system modules, and module interactions are discussed.
         
@@ -181,7 +181,7 @@
 		However, the connection time in our system occurs very quickly. If there are any APs for the client to connect to, our system guarantees that a connection will be made within 0.5 seconds. This guarantee is possible because the client will check every possible connection and connect to the strongest possible AP that allows a connection. It does not have to wait for any other part of the system to run analysis before the initial connection. 
 		
 		\subsection{Usage Statistic Latency}
-		Every 30 seconds, each AP sends the required usage statistics to the IS\&T server. The storing an exporting of these statistics is left to the server. Consequently, the server's model of the network state and usage is at most 30 seconds out of date. This means that IS\&T possess any usage data 30 seconds after it is collected.
+		Every 30 seconds, each AP sends the required usage statistics to the IS\&T server. The storing and exporting of these statistics is left to the server. Consequently, the server's model of the network state and usage is at most 30 seconds out of date. This means that IS\&T possess any usage data 30 seconds after it is collected.
 		
 		\subsection{Network Utilization}
 		Our systems allows for high network utilization, even under heavy load. The heavy lifting of the optimization is done on the server, which can handle heavy loads; individual APs do not have to handle individually optimizing their clients. All APs report to the server every 30 seconds. Therefore the biggest performance factor in the server's ability to process information is the number of APs, not the network load.\\
